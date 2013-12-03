@@ -9,9 +9,9 @@ namespace GKLab3
 {
     class HSLColor
     {
-        const int HUE_COUNT = 8;
-        const int SAT_COUNT = 8;
-        const int LIGHT_COUNT = 8;
+        const int HUE_COUNT = 10;
+        const int SAT_COUNT = 10;
+        const int LIGHT_COUNT = 10;
 
         public static double[] hueIntervals = new double[HUE_COUNT];
         public static double[] satIntervals = new double[SAT_COUNT];
@@ -23,16 +23,16 @@ namespace GKLab3
 
         static HSLColor()
         {
-            double hueStep = 360.0 / (HUE_COUNT);
-            double satStep = 100.0 / (SAT_COUNT - 1);
-            double lightStep = 100.0 / (LIGHT_COUNT - 1);
+            double hueStep = 360.0 / (HUE_COUNT-1);
+            double satStep = 1.0 / (SAT_COUNT-1);
+            double lightStep = 1.0 / (LIGHT_COUNT-1);
 
             hueIntervals[0] = 0;
             for (int i = 1; i < hueIntervals.Length - 1; i++)
             {
                 hueIntervals[i] = hueStep * i;
             }
-            hueIntervals[hueIntervals.Length - 1] = 360.0;
+            hueIntervals[hueIntervals.Length - 1] = 360;
             //hueIntervals[hueIntervals.Length - 1] = 0;
 
             satIntervals[0] = 0;
@@ -40,14 +40,14 @@ namespace GKLab3
             {
                 satIntervals[i] = satStep * i;
             }
-            satIntervals[satIntervals.Length - 1] = 100.0;
+            satIntervals[satIntervals.Length - 1] = 1.0;
 
             lightIntervals[0] = 0;
             for (int i = 1; i < lightIntervals.Length - 1; i++)
             {
                 lightIntervals[i] = lightStep * i;
             }
-            lightIntervals[lightIntervals.Length - 1] = 100.0;
+            lightIntervals[lightIntervals.Length - 1] = 1.0;
         }
 
         public HSLColor(double h, double s, double l)
@@ -201,11 +201,11 @@ namespace GKLab3
                 double closestValue = 0;
                 foreach (var value in hueIntervals)
                 {
-                    if (Math.Abs(value - H) < Math.Abs(value - closestValue))
+                    if (Math.Abs(value - H) < Math.Abs(H - closestValue))
                         closestValue = value;
                 }
 
-                H = (int)closestValue;
+                H = closestValue;
             }
 
             if (reduceS)
@@ -213,10 +213,10 @@ namespace GKLab3
                 double closestValue = 0;
                 foreach (var value in satIntervals)
                 {
-                    if (Math.Abs(value - S) < Math.Abs(value - closestValue))
+                    if (Math.Abs(value - S) < Math.Abs(S - closestValue))
                         closestValue = value;
                 }
-                S = (int)closestValue;
+                S = closestValue;
             }
 
             if (reduceL)
@@ -224,10 +224,10 @@ namespace GKLab3
                 double closestValue = 0;
                 foreach (var value in lightIntervals)
                 {
-                    if (Math.Abs(value - L) < Math.Abs(value - closestValue))
+                    if (Math.Abs(value - L) < Math.Abs(L - closestValue))
                         closestValue = value;
                 }
-                L = (int)closestValue;
+                L = closestValue;
             }
         }
     }
